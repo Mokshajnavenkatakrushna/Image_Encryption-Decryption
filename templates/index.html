@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Encryption & Decryption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #1e1e2e;
+            position: relative;
+        }
+
+        /* Background Glow */
+        .background-glow {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(255, 80, 160, 0.5), rgba(30, 30, 46, 0.9));
+            animation: pulseGlow 6s infinite alternate;
+            z-index: -2;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Waves */
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            bottom: -50px;
+            left: -50%;
+            border-radius: 50%;
+            animation: waveMove 8s infinite linear;
+            opacity: 0.5;
+        }
+
+        .wave:nth-child(2) {
+            background: rgba(255, 255, 255, 0.3);
+            animation-duration: 10s;
+            bottom: -40px;
+        }
+
+        .wave:nth-child(3) {
+            background: rgba(255, 255, 255, 0.15);
+            animation-duration: 12s;
+            bottom: -30px;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0) translateY(10px); }
+            50% { transform: translateX(25%) translateY(-10px); }
+            100% { transform: translateX(50%) translateY(10px); }
+        }
+
+        /* Floating Bubbles */
+        .bubble-container {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: floatUp 8s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            background: #fff;
+            border: 1px solid #ff9a9e;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(255, 117, 140, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-glow"></div>
+
+    <!-- Floating Bubbles -->
+    <div class="bubble-container">
+        <script>
+            for (let i = 0; i < 50; i++) {  // Increased bubble count
+                let bubble = document.createElement("div");
+                bubble.className = "bubble";
+                let size = Math.random() * 30 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.animationDuration = `${Math.random() * 6 + 4}s`;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                document.querySelector(".bubble-container").appendChild(bubble);
+            }
+        </script>
+    </div>
+
+    <!-- Encryption Section -->
+    <div class="container">
+        <h2>Send Encrypted Image via Email</h2>
+        <form action="/encrypt" method="post" enctype="multipart/form-data">
+            <input type="email" name="email" placeholder="Enter recipient email" required><br>
+            <input type="file" name="image" required><br>
+            <input type="password" name="password" placeholder="Enter encryption password" required><br>
+            <button type="submit">Encrypt & Send</button>
+        </form>
+    </div>
+
+    <!-- Decryption Section -->
+    <div class="container">
+        <h2>Decrypt Image</h2>
+        <form action="/decrypt" method="post" enctype="multipart/form-data">
+            <input type="file" name="encrypted_image" required><br>
+            <input type="password" name="password" placeholder="Enter decryption password" required><br>
+            <button type="submit">Decrypt Image</button>
+        </form>
+    </div>
+
+    <!-- Waves under the container -->
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+</body>
+</html>
